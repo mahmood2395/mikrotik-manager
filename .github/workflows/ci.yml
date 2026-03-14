@@ -54,28 +54,29 @@ jobs:
         run: cp .env.example .env
 
       - name: Generate app key
-        run: php artisan key:generate
+        run: |
+            php artisan key:generate
+            echo "APP_KEY=$(grep APP_KEY .env | cut -d '=' -f2-)" >> $GITHUB_ENV
 
       - name: Run migrations
         env:
-          DB_CONNECTION: pgsql
-          DB_HOST: 127.0.0.1
-          DB_PORT: 5432
-          DB_DATABASE: laravel_test
-          DB_USERNAME: laravel
-          DB_PASSWORD: secret
+            DB_CONNECTION: pgsql
+            DB_HOST: 127.0.0.1
+            DB_PORT: 5432
+            DB_DATABASE: mikrotik_test
+            DB_USERNAME: psql
+            DB_PASSWORD: secret
         run: php artisan migrate --force
 
       - name: Run tests
         env:
-          DB_CONNECTION: pgsql
-          DB_HOST: 127.0.0.1
-          DB_PORT: 5432
-          DB_DATABASE: laravel_test
-          DB_USERNAME: laravel
-          DB_PASSWORD: secret
-          APP_ENV: testing
-          APP_KEY: ${{ env.APP_KEY }}
+            APP_ENV: testing
+            DB_CONNECTION: pgsql
+            DB_HOST: 127.0.0.1
+            DB_PORT: 5432
+            DB_DATABASE: mikrotik_test
+            DB_USERNAME: psql
+            DB_PASSWORD: secret
         run: php artisan test
 
   # ---------------------------------------------------------------
