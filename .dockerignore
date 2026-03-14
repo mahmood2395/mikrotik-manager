@@ -1,0 +1,30 @@
+# Dependencies — installed inside the container
+vendor/
+node_modules/
+
+# Environment file — never goes into an image
+.env
+
+# Git files
+.git/
+.gitignore
+
+# Docker files themselves
+Dockerfile
+docker-compose.yml
+docker/
+
+# Laravel logs and cache — generated at runtime
+storage/logs/
+storage/framework/cache/
+storage/framework/sessions/
+storage/framework/views/
+bootstrap/cache/
+
+# Tests
+tests/
+
+# IDE files
+.idea/
+.vscode/
+*.swp

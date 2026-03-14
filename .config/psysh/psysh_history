@@ -1,0 +1,12 @@
+\App\Models\User::create([
+    'name'     => 'Admin',
+    'email'    => 'admin@example.com',
+    'password' => bcrypt('your-password-here'),
+]);
+exit
+\App\Models\User::create([
+    'name'     => 'Admin',
+    'email'    => 'admin@example.com',
+    'password' => bcrypt('your-password-here'),
+]);
+exit
