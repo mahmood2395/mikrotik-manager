@@ -51,7 +51,13 @@ jobs:
         run: composer install --no-interaction --prefer-dist --optimize-autoloader
 
       - name: Copy .env
-        run: cp .env.example .env
+        run: |
+            cp .env.example .env
+            sed -i 's/DB_HOST=.*/DB_HOST=127.0.0.1/' .env
+            sed -i 's/DB_PORT=.*/DB_PORT=5432/' .env
+            sed -i 's/DB_DATABASE=.*/DB_DATABASE=mikrotik_test/' .env
+            sed -i 's/DB_USERNAME=.*/DB_USERNAME=psql/' .env
+            sed -i 's/DB_PASSWORD=.*/DB_PASSWORD=secret/' .env
 
       - name: Generate app key
         run: |
@@ -60,12 +66,13 @@ jobs:
 
       - name: Run migrations
         env:
-            DB_CONNECTION: pgsql
-            DB_HOST: 127.0.0.1
-            DB_PORT: 5432
-            DB_DATABASE: mikrotik_test
-            DB_USERNAME: psql
-            DB_PASSWORD: secret
+          APP_ENV: testing
+          DB_CONNECTION: pgsql
+          DB_HOST: 127.0.0.1
+          DB_PORT: 5432
+          DB_DATABASE: mikrotik_test
+          DB_USERNAME: psql
+          DB_PASSWORD: secret
         run: php artisan migrate --force
 
       - name: Run tests
