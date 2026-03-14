@@ -21,7 +21,7 @@ RUN composer install \
 # ---------------------------------------------------------------
 # Stage 2 — The actual running image
 # ---------------------------------------------------------------
-FROM php:8.3-fpm
+FROM php:8.4-fpm
 
 # Install system dependencies and PHP extensions Laravel needs
 RUN apt-get update && apt-get install -y \
