@@ -72,15 +72,18 @@ Route::middleware('auth')->group(function () {
         ->name('firewall.store');
 
 
-    // Metrics endpoint — only accessible from localhost or monitoring server
-    Route::get('/metrics', function() {
-        // Allow only local or monitoring server IP
-        $allowedIps = ['127.0.0.1', '::1'];
-
-        if (!in_array(request()->ip(), $allowedIps)) {
-            abort(403);
-        }
-
-        return Spatie\Prometheus\Facades\Prometheus::renderResponse();
-    })->name('metrics');
 });
+
+Route::get('/metrics', function() {
+    $token = config('prometheus.token');
+
+    if ($token && request()->get('token') !== $token) {
+        abort(403);
+    }
+
+    return response(
+        \Spatie\Prometheus\Facades\Prometheus::renderCollectors(),
+        200,
+        ['Content-Type' => 'text/plain; charset=utf-8']
+    );
+})->name('metrics');

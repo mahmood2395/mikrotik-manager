@@ -56,4 +56,6 @@ return [
      *  'cache' => 'array'    // InMemory implementation using laravel cache
      */
     'cache' => null,
+
+    'token' => env('METRICS_TOKEN', null),
 ];
