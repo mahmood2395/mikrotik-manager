@@ -71,4 +71,16 @@ Route::middleware('auth')->group(function () {
     Route::post('routers/{router}/firewall/store', [FirewallController::class, 'store'])
         ->name('firewall.store');
 
+
+    // Metrics endpoint — only accessible from localhost or monitoring server
+    Route::get('/metrics', function() {
+        // Allow only local or monitoring server IP
+        $allowedIps = ['127.0.0.1', '::1'];
+
+        if (!in_array(request()->ip(), $allowedIps)) {
+            abort(403);
+        }
+
+        return Spatie\Prometheus\Facades\Prometheus::renderResponse();
+    })->name('metrics');
 });
