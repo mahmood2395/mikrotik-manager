@@ -54,6 +54,8 @@ RUN mkdir -p /var/www/storage/app/public \
     && chown -R www-data:www-data /var/www/storage /var/www/bootstrap/cache \
     && chmod -R 775 /var/www/storage /var/www/bootstrap/cache
 
+    # Fix PHP-FPM to listen on all interfaces
+RUN echo '[www]\nlisten = 0.0.0.0:9000' > /usr/local/etc/php-fpm.d/zz-listen.conf
 # Run as non-root user for security
 USER www-data
 
