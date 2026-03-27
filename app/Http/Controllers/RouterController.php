@@ -23,7 +23,7 @@ class RouterController extends Controller
     }
 
     // Save new router
-    public function store(Request $request)
+    public function store(Request $request, Router $router)
     {
         $validated = $request->validate([
             'name'        => 'required|string|max:255',
