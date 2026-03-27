@@ -54,10 +54,23 @@ return [
 
         'stack' => [
             'driver' => 'stack',
-            'channels' => explode(',', (string) env('LOG_STACK', 'single')),
-            'ignore_exceptions' => false,
+            'channels' => ['json', 'elasticsearch'],
+            'ignore_exceptions' => true,
         ],
-
+        'elasticsearch' => [
+            'driver'  => 'custom',
+            'via'     => \App\Logging\ElasticsearchHandler::class,
+            'level'   => 'debug',
+        ],
+    'json' => [
+        'driver' => 'single',
+        'path' => storage_path('logs/laravel.log'),
+        'level' => env('LOG_LEVEL', 'debug'),
+        'formatter' => Monolog\Formatter\JsonFormatter::class,
+        'formatter_with' => [
+            'dateFormat' => 'Y-m-d\TH:i:s.uP',  // ISO 8601 — Kibana understands this
+        ],
+    ],
         'single' => [
             'driver' => 'single',
             'path' => storage_path('logs/laravel.log'),

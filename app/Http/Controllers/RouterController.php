@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Router;
 use Illuminate\Http\Request;
 use App\Services\MikrotikService;
+use Illuminate\Support\Facades\Log;
 
 class RouterController extends Controller
 {
@@ -34,6 +35,12 @@ class RouterController extends Controller
             'description' => 'nullable|string',
         ]);
 
+        Log::info('Router created', [
+            'router_id'   => $router->id,
+            'router_name' => $router->name,
+            'router_ip'   => $router->ip_address,
+        ]);
+        
         Router::create($validated);
 
         return redirect()->route('routers.index')
@@ -79,6 +86,10 @@ class RouterController extends Controller
     // Delete router
     public function destroy(Router $router)
     {
+        Log::warning('Router deleted', [
+            'router_id'   => $router->id,
+            'router_name' => $router->name,
+        ]);
         $router->delete();
 
         return redirect()->route('routers.index')
@@ -96,4 +107,5 @@ class RouterController extends Controller
                 : "❌ Could not connect to {$router->name}. Check IP, port and credentials."
         );
     }
+    
 }

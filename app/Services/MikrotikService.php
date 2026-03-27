@@ -27,6 +27,25 @@ class MikrotikService
             'port' => $router->api_port,
         ]);
 
+        // When connecting to a router
+        Log::info('MikroTik connection attempt', [
+            'router_id' => $router->id,
+            'router_ip' => $router->ip_address,
+        ]);
+
+        // On success
+        Log::info('MikroTik command executed', [
+            'router_id'      => $router->id,
+            'command'        => $command,
+            'execution_time' => $executionTime,
+        ]);
+
+        // On failure
+        Log::error('MikroTik connection failed', [
+            'router_id' => $router->id,
+            'router_ip' => $router->ip_address,
+            'error'     => $e->getMessage(),
+        ]);
         $router->update(['last_seen' => now()]);
 
         return $this;
@@ -392,4 +411,5 @@ public function addFirewallRule(array $params): void
     }
     $this->client->query($query)->read();
 }
+
 }
